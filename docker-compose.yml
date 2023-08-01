@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  db:
+    image: postgres:11
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: sentence_builder
+    volumes:
+      - ./sentence-builder-be-postgres/pgdata:/var/lib/postgresql/data
+      - ./sentence-builder-be-postgres/table-scripts:/tables-scripts
+
+  app:
+      build: ./sentence-builder-be-postgres
+      ports:
+        - "4000:4000"
+
+  frontend:
+    build: ./sentence-builder-frontend
+    container_name: app_container
+    ports:
+      - '3000:3000'
+    stdin_open: true
+    tty: true
